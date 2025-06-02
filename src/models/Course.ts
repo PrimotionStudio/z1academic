@@ -1,5 +1,6 @@
 import "@/models/Lecturer";
 import "@/models/Department";
+import "@/models/Semester";
 import mongoose, { Schema, Document } from "mongoose";
 
 const CourseSchema = new mongoose.Schema(
