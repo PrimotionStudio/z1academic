@@ -1,3 +1,5 @@
+import "@/models/Lecturer";
+import "@/models/Department";
 import mongoose, { Schema, Document } from "mongoose";
 
 const CourseSchema = new mongoose.Schema(
@@ -16,7 +18,7 @@ const CourseSchema = new mongoose.Schema(
     },
     lecturer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Lecturer",
       required: true,
     },
     departmentId: {

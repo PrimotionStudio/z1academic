@@ -1,3 +1,5 @@
+import "@/models/User";
+import "@/models/Department";
 import mongoose, { Document, Schema } from "mongoose";
 
 interface IStudent extends Document {
@@ -10,10 +12,12 @@ const StudentSchema = new Schema<IStudent>(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      required: true,
+      ref: "User",
+      refuired: true,
     },
     department: {
       type: Schema.Types.ObjectId,
+      ref: "Department",
       required: true,
     },
     level: {
