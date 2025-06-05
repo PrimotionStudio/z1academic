@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ChevronRight, Hourglass, Key, School } from "lucide-react";
+import { ChevronRight, Hourglass, Key, School, School2 } from "lucide-react";
 import Link from "next/link";
 
 export default function SettingsPage() {
@@ -31,38 +31,20 @@ export default function SettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Link href="/me/settings/configuration">
+            <Link href="/me/settings/grade-scheme">
               <Button
                 variant="ghost"
                 className="w-full justify-between h-auto p-4 text-left"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 w-full text-wrap">
                   <div className="p-2 bg-primary/10 rounded-lg">
-                    <School className="h-4 w-4 text-primary" />
+                    <School2 className="h-4 w-4 text-primary" />
                   </div>
                   <div>
-                    <div className="font-medium">Configuration</div>
-                    <div className="text-sm text-muted-foreground">
-                      Set and edit instituition's information
-                    </div>
-                  </div>
-                </div>
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
-              </Button>
-            </Link>
-            <Link href="/me/settings/session-period">
-              <Button
-                variant="ghost"
-                className="w-full justify-between h-auto p-4 text-left"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <Hourglass className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-medium">Session & Period</div>
-                    <div className="text-sm text-muted-foreground">
-                      Set, edit and activate current academic calendar
+                    <div className="font-medium">Grade Scheme</div>
+                    <div className="text-sm text-muted-foreground text-wrap">
+                      Set, edit and activate the grading format used by the
+                      entire instituition
                     </div>
                   </div>
                 </div>
@@ -81,7 +63,7 @@ export default function SettingsPage() {
                   <div>
                     <div className="font-medium">Change Password</div>
                     <div className="text-sm text-muted-foreground">
-                      Update your account password
+                      Update your password
                     </div>
                   </div>
                 </div>

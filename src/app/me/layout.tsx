@@ -152,7 +152,7 @@ export default function AdminLayout({
                       />
                     ) : (
                       <Avatar className="h-[30px] w-[30px]">
-                        <AvatarFallback className="text-4xl font-bold">
+                        <AvatarFallback className="font-bold">
                           {user?.fullName
                             .split(" ")
                             .splice(0, 2)
