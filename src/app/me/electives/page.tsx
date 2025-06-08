@@ -52,6 +52,12 @@ import {
   getAllCourses,
   editCourse as EditCourse,
 } from "@/functions/Course";
+import { Elective, InputElective } from "@/types/Elective";
+import {
+  addElective as AddElective,
+  editElective as EditElective,
+  getAllElectives,
+} from "@/functions/Elective";
 
 export default function CoursesPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -64,23 +70,18 @@ export default function CoursesPage() {
   const [selectedLevel, setSelectedLevel] = useState<number | "all">("all");
   const [selectedPeriod, setSelectedPeriod] = useState("all");
   const [isLoading, setIsLoading] = useState(false);
-  const [course, setCourse] = useState<InputCourse>({
-    code: "",
+  const [electives, setElectives] = useState<Elective[]>([]);
+  const [editElective, setEditElective] = useState<InputElective>({
+    course: "",
     department: "",
-    lecturer: "",
     level: 100,
-    name: "",
     semester: "",
-    units: 1,
   });
-  const [editCourseInfo, setEditCourseInfo] = useState<InputCourse>({
-    code: "",
+  const [elective, setElective] = useState<InputElective>({
+    course: "",
     department: "",
-    lecturer: "",
     level: 100,
-    name: "",
     semester: "",
-    units: 1,
   });
 
   useEffect(() => {
@@ -89,7 +90,7 @@ export default function CoursesPage() {
         await Promise.all([
           getAllPeriods().then((periods) => setPeriods(periods)),
           getAllCourses().then((courses) => setCourses(courses)),
-          getAllLecturer().then((lecturers) => setLecturers(lecturers)),
+          getAllElectives().then((electives) => setElectives(electives)),
           getAllDepartments().then((departments) =>
             setDepartments(departments),
           ),
@@ -101,99 +102,77 @@ export default function CoursesPage() {
     fetchData();
   }, []);
 
-  const filteredCourses = courses.filter((course) => {
+  async function addElective() {
+    try {
+      await AddElective(elective).then((message) => {
+        getAllElectives().then((electives) => setElectives(electives));
+        toast.success(message);
+      });
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  }
+
+  async function editElectiveFunc(
+    electiveId: string,
+    electiveData: InputElective,
+  ) {
+    if (!electiveId) return;
+    try {
+      await EditElective(electiveId, electiveData).then((message) => {
+        getAllElectives().then((electives) => setElectives(electives));
+        toast.success(message);
+      });
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  }
+
+  const filteredElectives = electives.filter((elective) => {
     const matchesSearch =
-      course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      course.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      Number(course.units)
-        .toString()
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      course.lecturer.userId.fullName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+      elective.course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      elective.course.code.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesDepartment =
       selectedDepartment === "all" ||
-      course.departmentId._id === selectedDepartment;
+      elective.department._id === selectedDepartment;
     const matchesLevel =
       selectedLevel === "all" ||
-      course.level.toString() === selectedLevel.toString();
+      elective.level.toString() === selectedLevel.toString();
     const matchesSemester =
-      selectedPeriod === "all" || course.semesterId._id === selectedPeriod;
+      selectedPeriod === "all" || elective.semester._id === selectedPeriod;
     return (
       matchesSearch && matchesDepartment && matchesLevel && matchesSemester
     );
   });
 
-  async function editCourse(courseId: string, course: InputCourse) {
-    try {
-      await EditCourse(courseId, course).then((message) => {
-        toast.success(message);
-        getAllCourses().then((courses) => setCourses(courses));
-        setEditCourseInfo({
-          code: "",
-          department: "",
-          lecturer: "",
-          level: 100,
-          name: "",
-          semester: "",
-          units: 1,
-        });
-      });
-    } catch (error) {
-      toast.error((error as Error).message);
-    }
-  }
-
-  async function createCourse(e: React.FormEvent) {
-    e.preventDefault();
-    try {
-      await addNewCourse(course).then((message) => {
-        toast.success(message);
-        getAllCourses().then((courses) => setCourses(courses));
-        setCourse({
-          code: "",
-          department: "",
-          lecturer: "",
-          level: 100,
-          name: "",
-          semester: "",
-          units: 1,
-        });
-      });
-    } catch (error) {
-      toast.error((error as Error).message);
-    }
-  }
-
   return (
     <div className="container mx-auto py-10 px-4">
       <div className="flex justify-between items-center flex-wrap mb-3">
         <h1 className="text-xl md:text-3xl font-semibold md:font-bold tracking-tight">
-          Courses
+          Electives
         </h1>
         <Dialog>
           <DialogTrigger asChild>
             <Button>
-              <Plus className="h-4 w-4" /> Course
+              <Plus className="h-4 w-4" /> Elective
             </Button>
           </DialogTrigger>
           <DialogContent className="bg-white sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Add New Course</DialogTitle>
+              <DialogTitle>Add Elective</DialogTitle>
               <DialogDescription>
-                Enter the details for the new course
+                Enter the details for the elective
               </DialogDescription>
             </DialogHeader>
-            <form className="space-y-4" onSubmit={createCourse}>
+            <form className="space-y-4" onSubmit={addElective}>
               <div className="grid gap-4 py-4">
                 <div className="space-y-2">
                   <Label htmlFor="department">Department</Label>
                   <Select
-                    value={course.department}
+                    value={elective.department}
                     onValueChange={(department) =>
-                      setCourse({ ...course, department })
+                      setElective({ ...elective, department })
                     }
                     required
                   >
@@ -219,12 +198,15 @@ export default function CoursesPage() {
                     min={100}
                     max={
                       departments.find(
-                        (department) => department._id === course.department,
+                        (department) => department._id === elective.department,
                       )?.maxLevels || 1000
                     }
-                    value={course.level}
+                    value={elective.level}
                     onChange={(e) =>
-                      setCourse({ ...course, level: Number(e.target.value) })
+                      setElective({
+                        ...elective,
+                        level: Number(e.target.value),
+                      })
                     }
                     required
                   />
@@ -232,9 +214,9 @@ export default function CoursesPage() {
                 <div className="space-y-2">
                   <Label htmlFor="semester">Semester</Label>
                   <Select
-                    value={course.semester}
+                    value={elective.semester}
                     onValueChange={(semester) =>
-                      setCourse({ ...course, semester })
+                      setElective({ ...elective, semester })
                     }
                     required
                   >
@@ -250,74 +232,65 @@ export default function CoursesPage() {
                     </SelectContent>
                   </Select>
                 </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="courseName">Course Name</Label>
-                  <Input
-                    id="courseName"
-                    placeholder="Enter Course name"
-                    value={course.name}
-                    onChange={(e) =>
-                      setCourse({ ...course, name: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="courseCode">Course Code</Label>
-                  <Input
-                    id="courseCode"
-                    placeholder="Enter Course code"
-                    value={course.code}
-                    onChange={(e) =>
-                      setCourse({ ...course, code: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="courseUnits">Course Units</Label>
-                  <Input
-                    id="courseUnits"
-                    placeholder="Enter Course unit"
-                    value={course.units}
-                    type="number"
-                    onChange={(e) =>
-                      setCourse({ ...course, units: Number(e.target.value) })
-                    }
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lecturer">Lecturer</Label>
+                  <Label htmlFor="course">Course</Label>
                   <Select
-                    value={course.lecturer}
-                    onValueChange={(selectedLecturer) =>
-                      setCourse({ ...course, lecturer: selectedLecturer })
+                    value={elective.course}
+                    onValueChange={(course) =>
+                      setElective({ ...elective, course })
                     }
                     required
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Lecturer" />
+                      <SelectValue placeholder="Course" />
                     </SelectTrigger>
                     <SelectContent className="bg-white">
-                      {lecturers
+                      {courses
                         .filter(
-                          (lecturer) =>
-                            lecturer.department === course.department,
+                          (c) => c.departmentId._id !== elective.department,
                         )
-                        .map((lecturer, i) => (
-                          <SelectItem key={i} value={lecturer._id}>
-                            {lecturer.userId.fullName}
+                        .map((course, i) => (
+                          <SelectItem key={i} value={course._id}>
+                            {course.name}
                           </SelectItem>
                         ))}
                     </SelectContent>
                   </Select>
+                  {(() => {
+                    const course = courses.find(
+                      (c) =>
+                        c._id === elective.course &&
+                        c.departmentId._id !== elective.department,
+                    );
+                    if (!course) return;
+                    return (
+                      <>
+                        <div className="space-y-2">
+                          <Label>Course Original Department</Label>
+                          <Input
+                            value={course.departmentId.name}
+                            onChange={() => ""}
+                            readOnly
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Lecturer</Label>
+                          <Input
+                            value={course.lecturer.userId.fullName}
+                            onChange={() => ""}
+                            readOnly
+                          />
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
               <DialogFooter>
                 <DialogClose asChild>
                   <Button type="submit" disabled={isLoading}>
-                    {isLoading ? "Adding..." : "Add Course"}
+                    {isLoading ? "Adding..." : "Add Elective"}
                   </Button>
                 </DialogClose>
               </DialogFooter>
@@ -328,9 +301,10 @@ export default function CoursesPage() {
 
       <Card className="bg-white">
         <CardHeader>
-          <CardTitle>All Courses</CardTitle>
+          <CardTitle>All Electives</CardTitle>
           <CardDescription>
-            View and manage all courses. Use the filters to narrow down results.
+            View and manage all electives. Use the filters to narrow down
+            results.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -413,30 +387,34 @@ export default function CoursesPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>ID</TableHead>
-                  <TableHead>Name</TableHead>
+                  <TableHead>Course Name</TableHead>
                   <TableHead>Code</TableHead>
                   <TableHead>Units</TableHead>
                   <TableHead>Lecturer</TableHead>
+                  <TableHead>Course Original Department</TableHead>
                   <TableHead>Department</TableHead>
                   <TableHead>Level</TableHead>
                   <TableHead>Semester</TableHead>
-                  <TableHead>Registered on</TableHead>
+                  <TableHead>Added on</TableHead>
                   <TableHead className="text-right">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredCourses.length > 0 ? (
-                  filteredCourses.map((course, i) => (
+                {filteredElectives.length > 0 ? (
+                  filteredElectives.map((elective, i) => (
                     <TableRow key={i}>
                       <TableCell className="font-medium">{i + 1}</TableCell>
-                      <TableCell>{course.name}</TableCell>
-                      <TableCell>{course.code}</TableCell>
-                      <TableCell>{course.units}</TableCell>
-                      <TableCell>{course.lecturer.userId.fullName}</TableCell>
-                      <TableCell>{course.departmentId.name}</TableCell>
-                      <TableCell>{course.level}</TableCell>
-                      <TableCell>{course.semesterId.name}</TableCell>
-                      <TableCell>{formatDate(course.createdAt)}</TableCell>
+                      <TableCell>{elective.course.name}</TableCell>
+                      <TableCell>{elective.course.code}</TableCell>
+                      <TableCell>{elective.course.units}</TableCell>
+                      <TableCell>
+                        {elective.course.lecturer.userId.fullName}
+                      </TableCell>
+                      <TableCell>{elective.course.departmentId.name}</TableCell>
+                      <TableCell>{elective.department.name}</TableCell>
+                      <TableCell>{elective.level}</TableCell>
+                      <TableCell>{elective.semester.name}</TableCell>
+                      <TableCell>{formatDate(elective.createdAt)}</TableCell>
                       <TableCell className="text-right flex justify-end">
                         <Dialog>
                           <DialogTrigger asChild>
@@ -444,11 +422,12 @@ export default function CoursesPage() {
                               variant={"ghost"}
                               size={"icon"}
                               onClick={() =>
-                                setEditCourseInfo({
-                                  ...course,
-                                  department: course.departmentId._id,
-                                  semester: course.semesterId._id,
-                                  lecturer: course.lecturer._id,
+                                setEditElective({
+                                  ...elective,
+                                  department: elective.department._id,
+                                  semester: elective.semester._id,
+                                  level: elective.level,
+                                  course: elective.course._id,
                                 })
                               }
                             >
@@ -457,26 +436,26 @@ export default function CoursesPage() {
                           </DialogTrigger>
                           <DialogContent className="bg-white sm:max-w-[425px]">
                             <DialogHeader>
-                              <DialogTitle>Edit Course</DialogTitle>
+                              <DialogTitle>Edit Elective</DialogTitle>
                               <DialogDescription>
-                                Update course details
+                                Update elective details
                               </DialogDescription>
                             </DialogHeader>
                             <form
                               className="space-y-4"
                               onSubmit={(e) => {
                                 e.preventDefault();
-                                editCourse(course._id, editCourseInfo);
+                                editElectiveFunc(elective._id, editElective);
                               }}
                             >
                               <div className="grid gap-4 py-4">
                                 <div className="space-y-2">
                                   <Label htmlFor="department">Department</Label>
                                   <Select
-                                    value={editCourseInfo.department}
+                                    value={editElective.department}
                                     onValueChange={(department) =>
-                                      setEditCourseInfo({
-                                        ...editCourseInfo,
+                                      setEditElective({
+                                        ...editElective,
                                         department,
                                       })
                                     }
@@ -511,13 +490,13 @@ export default function CoursesPage() {
                                       departments.find(
                                         (department) =>
                                           department._id ===
-                                          editCourseInfo.department,
+                                          editElective.department,
                                       )?.maxLevels || 1000
                                     }
-                                    value={editCourseInfo.level}
+                                    value={editElective.level}
                                     onChange={(e) =>
-                                      setEditCourseInfo({
-                                        ...editCourseInfo,
+                                      setEditElective({
+                                        ...editElective,
                                         level: Number(e.target.value),
                                       })
                                     }
@@ -527,10 +506,10 @@ export default function CoursesPage() {
                                 <div className="space-y-2">
                                   <Label htmlFor="semester">Semester</Label>
                                   <Select
-                                    value={editCourseInfo.semester}
+                                    value={editElective.semester}
                                     onValueChange={(semester) =>
-                                      setEditCourseInfo({
-                                        ...editCourseInfo,
+                                      setEditElective({
+                                        ...editElective,
                                         semester,
                                       })
                                     }
@@ -552,86 +531,69 @@ export default function CoursesPage() {
                                   <Label htmlFor="courseName">
                                     Course Name
                                   </Label>
-                                  <Input
-                                    id="courseName"
-                                    placeholder="Enter Course name"
-                                    value={editCourseInfo.name}
-                                    onChange={(e) =>
-                                      setEditCourseInfo({
-                                        ...editCourseInfo,
-                                        name: e.target.value,
-                                      })
-                                    }
-                                    required
-                                  />
-                                </div>
-                                <div className="space-y-2">
-                                  <Label htmlFor="courseCode">
-                                    Course Code
-                                  </Label>
-                                  <Input
-                                    id="courseCode"
-                                    placeholder="Enter Course code"
-                                    value={editCourseInfo.code}
-                                    onChange={(e) =>
-                                      setEditCourseInfo({
-                                        ...editCourseInfo,
-                                        code: e.target.value,
-                                      })
-                                    }
-                                    required
-                                  />
-                                </div>
-                                <div className="space-y-2">
-                                  <Label htmlFor="courseUnits">
-                                    Course Units
-                                  </Label>
-                                  <Input
-                                    id="courseUnits"
-                                    placeholder="Enter Course unit"
-                                    value={editCourseInfo.units}
-                                    type="number"
-                                    onChange={(e) =>
-                                      setEditCourseInfo({
-                                        ...editCourseInfo,
-                                        units: Number(e.target.value),
-                                      })
-                                    }
-                                    required
-                                  />
-                                </div>
-                                <div className="space-y-2">
-                                  <Label htmlFor="lecturer">Lecturer</Label>
                                   <Select
-                                    value={editCourseInfo.lecturer}
-                                    onValueChange={(selectedLecturer) =>
-                                      setEditCourseInfo({
-                                        ...editCourseInfo,
-                                        lecturer: selectedLecturer,
+                                    value={editElective.course}
+                                    onValueChange={(course) =>
+                                      setEditElective({
+                                        ...editElective,
+                                        course,
                                       })
                                     }
                                     required
                                   >
                                     <SelectTrigger>
-                                      <SelectValue placeholder="Lecturer" />
+                                      <SelectValue placeholder="Course" />
                                     </SelectTrigger>
                                     <SelectContent className="bg-white">
-                                      {lecturers
+                                      {courses
                                         .filter(
-                                          (lecturer) =>
-                                            lecturer.department ===
-                                            editCourseInfo.department,
+                                          (c) =>
+                                            c.departmentId._id !==
+                                            editElective.department,
                                         )
-                                        .map((lecturer, i) => (
+                                        .map((course, i) => (
                                           <SelectItem
                                             key={i}
-                                            value={lecturer._id}
+                                            value={course._id}
                                           >
-                                            {lecturer.userId.fullName}
+                                            {course.name}
                                           </SelectItem>
                                         ))}
                                     </SelectContent>
                                   </Select>
+                                  {(() => {
+                                    const course = courses.find(
+                                      (c) =>
+                                        c._id === editElective.course &&
+                                        c.departmentId._id !==
+                                          editElective.department,
+                                    );
+                                    if (!course) return;
+                                    return (
+                                      <>
+                                        <div className="space-y-2">
+                                          <Label>
+                                            Course Original Department
+                                          </Label>
+                                          <Input
+                                            value={course.departmentId.name}
+                                            onChange={() => ""}
+                                            readOnly
+                                          />
+                                        </div>
+                                        <div className="space-y-2">
+                                          <Label>Lecturer</Label>
+                                          <Input
+                                            value={
+                                              course.lecturer.userId.fullName
+                                            }
+                                            onChange={() => ""}
+                                            readOnly
+                                          />
+                                        </div>
+                                      </>
+                                    );
+                                  })()}
                                 </div>
                               </div>
                               <DialogFooter>
@@ -650,7 +612,7 @@ export default function CoursesPage() {
                 ) : (
                   <TableRow>
                     <TableCell
-                      colSpan={10}
+                      colSpan={11}
                       className="text-center py-6 text-muted-foreground"
                     >
                       No course found matching your filters.

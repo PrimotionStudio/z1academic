@@ -12,6 +12,7 @@ export interface GradeScheme extends Document {
   department: Schema.Types.ObjectId;
   totalScore: number;
   level: number;
+  maxCourseUnits: number;
   semester: Schema.Types.ObjectId;
 }
 
@@ -48,6 +49,10 @@ const GradeSchemeSchema = new Schema(
       },
     },
     level: {
+      type: Number,
+      required: true,
+    },
+    maxCourseUnits: {
       type: Number,
       required: true,
     },

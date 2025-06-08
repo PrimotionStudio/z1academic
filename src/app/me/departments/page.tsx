@@ -251,7 +251,7 @@ export default function FacultyDepartmentPage() {
       <Accordion type="multiple" className="w-full">
         {faculties.map((faculty, i) => (
           <AccordionItem key={i} value={`item-${i}`}>
-            <AccordionTrigger className="font-semibold hover:no-underline border px-3 mb-3 rounded">
+            <AccordionTrigger className="font-semibold hover:no-underline border px-3 mb-3 rounded bg-white">
               <div className="flex flex-row items-center justify-between">
                 {editFacultyInfo.facultyId === faculty._id ? (
                   <>

@@ -69,6 +69,7 @@ export default function AcademicSessions() {
     department: "",
     semester: "",
     level: 100,
+    maxCourseUnits: 10,
     assessmentTypes: [
       {
         name: "",
@@ -149,6 +150,7 @@ export default function AcademicSessions() {
         setIsAddGradeSchemeDialogOpen(false);
         setGradeScheme({
           semester: "",
+          maxCourseUnits: 10,
           department: "",
           level: 100,
           assessmentTypes: [{ name: "", score: 0 }],
@@ -171,6 +173,7 @@ export default function AcademicSessions() {
         setGradeScheme({
           semester: "",
           department: "",
+          maxCourseUnits: 10,
           level: 100,
           assessmentTypes: [{ name: "", score: 0 }],
         });
@@ -186,6 +189,7 @@ export default function AcademicSessions() {
       department: "",
       level: 100,
       assessmentTypes: [{ name: "", score: 0 }],
+      maxCourseUnits: 10,
     });
   };
 
@@ -279,6 +283,31 @@ export default function AcademicSessions() {
                       setGradeScheme({
                         ...gradeScheme,
                         level: Number(e.target.value),
+                      })
+                    }
+                    className="w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="maxCourseUnits"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Total Course Units
+                  </Label>
+
+                  <Input
+                    id="maxCourseUnits"
+                    placeholder="Enter Total Course Units"
+                    type="number"
+                    step={1}
+                    value={gradeScheme.maxCourseUnits}
+                    onChange={(e) =>
+                      setGradeScheme({
+                        ...gradeScheme,
+                        maxCourseUnits: Number(e.target.value),
                       })
                     }
                     className="w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -537,6 +566,7 @@ export default function AcademicSessions() {
                   <TableHead>Department</TableHead>
                   <TableHead>Semester</TableHead>
                   <TableHead>Level</TableHead>
+                  <TableHead>Total Course Units</TableHead>
                   <TableHead>Scheme</TableHead>
                   <TableHead>Added on</TableHead>
                   <TableHead className="text-right">Action</TableHead>
@@ -550,6 +580,7 @@ export default function AcademicSessions() {
                       <TableCell>{scheme.department.name}</TableCell>
                       <TableCell>{scheme.semester.name}</TableCell>
                       <TableCell>{scheme.level}</TableCell>
+                      <TableCell>{scheme.maxCourseUnits}</TableCell>
                       <TableCell>
                         {scheme.assessmentTypes.map((assessmentType, i) => (
                           <p key={i}>
@@ -558,7 +589,7 @@ export default function AcademicSessions() {
                         ))}
                       </TableCell>
                       <TableCell>{formatDate(scheme.createdAt)}</TableCell>
-                      <TableCell className="text-right flex flex-row items-center justify-end">
+                      <TableCell className="text-right">
                         <Dialog
                           open={isEditGradeSchemeDialogOpen}
                           onOpenChange={setIsEditGradeSchemeDialogOpen}
@@ -646,6 +677,31 @@ export default function AcademicSessions() {
                                       setGradeScheme({
                                         ...gradeScheme,
                                         level: Number(e.target.value),
+                                      })
+                                    }
+                                    className="w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    required
+                                  />
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label
+                                    htmlFor="maxCourseUnits"
+                                    className="text-sm font-medium text-gray-700"
+                                  >
+                                    Total Course Units
+                                  </Label>
+
+                                  <Input
+                                    id="maxCourseUnits"
+                                    placeholder="Enter Total Course Units"
+                                    type="number"
+                                    step={1}
+                                    value={gradeScheme.maxCourseUnits}
+                                    onChange={(e) =>
+                                      setGradeScheme({
+                                        ...gradeScheme,
+                                        maxCourseUnits: Number(e.target.value),
                                       })
                                     }
                                     className="w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

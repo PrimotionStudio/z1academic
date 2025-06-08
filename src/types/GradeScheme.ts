@@ -15,6 +15,7 @@ export interface GradeScheme {
   totalScore: number;
   semester: Period;
   level: number;
+  maxCourseUnits: number;
   createdAt: Date | string;
   updatedAt: Date | string;
 }
@@ -30,4 +31,5 @@ export interface InputGradeScheme {
   department: string;
   semester: string;
   level: number;
+  maxCourseUnits: number;
 }

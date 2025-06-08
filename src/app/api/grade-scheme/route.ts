@@ -61,6 +61,7 @@ export async function PATCH(req: NextRequest) {
         department: scheme.department,
         level: scheme.level,
         semester: scheme.semester,
+        maxCourseUnits: scheme.maxCourseUnits,
       },
       { new: true },
     );

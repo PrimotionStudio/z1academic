@@ -54,9 +54,9 @@ export default function AdminLayout({
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen bg-gray-50 w-full">
-        <Sidebar className="bg-grey-50">
-          <SidebarHeader className="border-b p-4">
+      <div className="flex min-h-screen bg-gray-100 w-full">
+        <Sidebar className="bg-white">
+          <SidebarHeader className="border-b p-4 bg-white">
             <Link href="/admin/dashboard" className="flex items-center gap-2">
               <div className="relative w-8 h-8">
                 <div className="absolute inset-0 bg-blue-600 rounded-full"></div>
@@ -69,7 +69,7 @@ export default function AdminLayout({
               </span>
             </Link>
           </SidebarHeader>
-          <SidebarContent className="flex flex-col justify-between p-4 h-[calc(100vh-4rem)]">
+          <SidebarContent className="flex flex-col justify-between p-4 h-[calc(100vh-4rem)] bg-white">
             <nav className="space-y-2">
               <Button
                 variant="ghost"
@@ -99,6 +99,16 @@ export default function AdminLayout({
                 <Link href="/me/courses">
                   <BookOpen className="mr-2 h-4 w-4" />
                   Courses
+                </Link>
+              </Button>
+              <Button
+                variant="ghost"
+                className={`w-full justify-start ${activeRoute.startsWith("electives") && "bg-muted"}`}
+                asChild
+              >
+                <Link href="/me/electives">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  Electives
                 </Link>
               </Button>
               <Button
