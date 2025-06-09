@@ -248,7 +248,9 @@ export default function CoursesPage() {
                     <SelectContent className="bg-white">
                       {courses
                         .filter(
-                          (c) => c.departmentId._id !== elective.department,
+                          (c) =>
+                            c.departmentId._id !== elective.department &&
+                            c.semesterId._id === elective.semester,
                         )
                         .map((course, i) => (
                           <SelectItem key={i} value={course._id}>
@@ -549,7 +551,9 @@ export default function CoursesPage() {
                                         .filter(
                                           (c) =>
                                             c.departmentId._id !==
-                                            editElective.department,
+                                              editElective.department &&
+                                            c.semesterId._id ===
+                                              editElective.semester,
                                         )
                                         .map((course, i) => (
                                           <SelectItem
