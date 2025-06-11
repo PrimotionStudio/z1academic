@@ -65,7 +65,7 @@ export default function AdminLayout({
                 </div>
               </div>
               <span style={{ marginLeft: -5 }} className="text-gray-900">
-                <span className={`${rockSalt.className}`}>Portal</span>
+                <span className={`${rockSalt.className}`}>ACADEMIC</span>
               </span>
             </Link>
           </SidebarHeader>
