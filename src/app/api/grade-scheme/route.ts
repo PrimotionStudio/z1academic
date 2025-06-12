@@ -62,6 +62,7 @@ export async function PATCH(req: NextRequest) {
         level: scheme.level,
         semester: scheme.semester,
         maxCourseUnits: scheme.maxCourseUnits,
+        minCourseUnits: scheme.minCourseUnits,
       },
       { new: true },
     );

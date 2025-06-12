@@ -1,6 +1,5 @@
 import { Department } from "./Department";
 import { Period } from "./Period";
-import { Session } from "./Session";
 
 export interface AssessmentType {
   _id: string;
@@ -16,6 +15,7 @@ export interface GradeScheme {
   semester: Period;
   level: number;
   maxCourseUnits: number;
+  minCourseUnits: number;
   createdAt: Date | string;
   updatedAt: Date | string;
 }
@@ -32,4 +32,5 @@ export interface InputGradeScheme {
   semester: string;
   level: number;
   maxCourseUnits: number;
+  minCourseUnits: number;
 }

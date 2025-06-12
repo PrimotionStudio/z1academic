@@ -68,6 +68,7 @@ export default function AcademicSessions() {
   const [gradeScheme, setGradeScheme] = useState<InputGradeScheme>({
     department: "",
     semester: "",
+    minCourseUnits: 1,
     level: 100,
     maxCourseUnits: 10,
     assessmentTypes: [
@@ -153,6 +154,7 @@ export default function AcademicSessions() {
           maxCourseUnits: 10,
           department: "",
           level: 100,
+          minCourseUnits: 1,
           assessmentTypes: [{ name: "", score: 0 }],
         });
       });
@@ -174,6 +176,7 @@ export default function AcademicSessions() {
           semester: "",
           department: "",
           maxCourseUnits: 10,
+          minCourseUnits: 1,
           level: 100,
           assessmentTypes: [{ name: "", score: 0 }],
         });
@@ -189,6 +192,7 @@ export default function AcademicSessions() {
       department: "",
       level: 100,
       assessmentTypes: [{ name: "", score: 0 }],
+      minCourseUnits: 1,
       maxCourseUnits: 10,
     });
   };
@@ -222,7 +226,7 @@ export default function AcademicSessions() {
               <Plus className="h-4 w-4" /> Grade Scheme
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-white sm:max-w-[425px]">
+          <DialogContent className="bg-white sm:max-w-[425px] max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Add New Grade Scheme</DialogTitle>
               <DialogDescription>
@@ -295,12 +299,12 @@ export default function AcademicSessions() {
                     htmlFor="maxCourseUnits"
                     className="text-sm font-medium text-gray-700"
                   >
-                    Total Course Units
+                    Max Course Units
                   </Label>
 
                   <Input
                     id="maxCourseUnits"
-                    placeholder="Enter Total Course Units"
+                    placeholder="Enter Max Course Units"
                     type="number"
                     step={1}
                     value={gradeScheme.maxCourseUnits}
@@ -315,6 +319,30 @@ export default function AcademicSessions() {
                   />
                 </div>
 
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="minCourseUnits"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Min Course Units
+                  </Label>
+
+                  <Input
+                    id="minCourseUnits"
+                    placeholder="Enter Min Course Units"
+                    type="number"
+                    step={1}
+                    value={gradeScheme.minCourseUnits}
+                    onChange={(e) =>
+                      setGradeScheme({
+                        ...gradeScheme,
+                        minCourseUnits: Number(e.target.value),
+                      })
+                    }
+                    className="w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                </div>
                 <div className="space-y-2">
                   <Label
                     htmlFor="academic-period"
@@ -566,7 +594,8 @@ export default function AcademicSessions() {
                   <TableHead>Department</TableHead>
                   <TableHead>Semester</TableHead>
                   <TableHead>Level</TableHead>
-                  <TableHead>Total Course Units</TableHead>
+                  <TableHead>Min Course Units</TableHead>
+                  <TableHead>Max Course Units</TableHead>
                   <TableHead>Scheme</TableHead>
                   <TableHead>Added on</TableHead>
                   <TableHead className="text-right">Action</TableHead>
@@ -580,6 +609,7 @@ export default function AcademicSessions() {
                       <TableCell>{scheme.department.name}</TableCell>
                       <TableCell>{scheme.semester.name}</TableCell>
                       <TableCell>{scheme.level}</TableCell>
+                      <TableCell>{scheme.minCourseUnits}</TableCell>
                       <TableCell>{scheme.maxCourseUnits}</TableCell>
                       <TableCell>
                         {scheme.assessmentTypes.map((assessmentType, i) => (
@@ -590,10 +620,7 @@ export default function AcademicSessions() {
                       </TableCell>
                       <TableCell>{formatDate(scheme.createdAt)}</TableCell>
                       <TableCell className="text-right">
-                        <Dialog
-                          open={isEditGradeSchemeDialogOpen}
-                          onOpenChange={setIsEditGradeSchemeDialogOpen}
-                        >
+                        <Dialog>
                           <DialogTrigger asChild>
                             <Button
                               variant="ghost"
@@ -609,7 +636,7 @@ export default function AcademicSessions() {
                               <Edit className="h-4 w-4" />
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="bg-white sm:max-w-[425px]">
+                          <DialogContent className="bg-white sm:max-w-[425px] max-h-[80vh] overflow-y-auto">
                             <DialogHeader>
                               <DialogTitle>Edit Grade Scheme</DialogTitle>
                               <DialogDescription>
@@ -694,7 +721,7 @@ export default function AcademicSessions() {
 
                                   <Input
                                     id="maxCourseUnits"
-                                    placeholder="Enter Total Course Units"
+                                    placeholder="Enter Max Course Units"
                                     type="number"
                                     step={1}
                                     value={gradeScheme.maxCourseUnits}
@@ -709,6 +736,30 @@ export default function AcademicSessions() {
                                   />
                                 </div>
 
+                                <div className="space-y-2">
+                                  <Label
+                                    htmlFor="minCourseUnits"
+                                    className="text-sm font-medium text-gray-700"
+                                  >
+                                    Min Course Units
+                                  </Label>
+
+                                  <Input
+                                    id="minCourseUnits"
+                                    placeholder="Enter Min Course Units"
+                                    type="number"
+                                    step={1}
+                                    value={gradeScheme.minCourseUnits}
+                                    onChange={(e) =>
+                                      setGradeScheme({
+                                        ...gradeScheme,
+                                        minCourseUnits: Number(e.target.value),
+                                      })
+                                    }
+                                    className="w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    required
+                                  />
+                                </div>
                                 <div className="space-y-2">
                                   <Label
                                     htmlFor="academic-period"
@@ -879,14 +930,16 @@ export default function AcademicSessions() {
                                     Cancel
                                   </Button>
                                 </DialogClose>
-                                <Button
-                                  type="submit"
-                                  disabled={!canSave}
-                                  onClick={() => editScheme()}
-                                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 order-1 sm:order-2"
-                                >
-                                  Edit Scheme
-                                </Button>
+                                <DialogClose asChild>
+                                  <Button
+                                    type="submit"
+                                    disabled={!canSave}
+                                    onClick={() => editScheme()}
+                                    className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 order-1 sm:order-2"
+                                  >
+                                    Edit Scheme
+                                  </Button>
+                                </DialogClose>
                               </div>
                             </DialogFooter>
                           </DialogContent>
