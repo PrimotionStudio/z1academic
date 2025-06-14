@@ -8,6 +8,7 @@ export async function middleware(req: NextRequest) {
     "/api/activate",
     "/api/forgot-password",
     "/api/reset",
+    "/api/timetable",
   ];
 
   if (excludedPaths.some((path) => pathname.startsWith(path)))
