@@ -1,3 +1,5 @@
+import "@/models/Course";
+import "@/models/User";
 import mongoose, { Schema } from "mongoose";
 
 const VideoSchema = new Schema(

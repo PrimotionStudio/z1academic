@@ -1,3 +1,5 @@
+import "@/models/Department";
+import "@/models/User";
 import mongoose, { Schema } from "mongoose";
 
 const BookSchema = new Schema(
