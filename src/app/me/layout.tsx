@@ -101,7 +101,7 @@ export default function AdminLayout({
                   Courses
                 </Link>
               </Button>
-              <Button
+              {/* <Button
                 variant="ghost"
                 className={`w-full justify-start ${activeRoute.startsWith("electives") && "bg-muted"}`}
                 asChild
@@ -109,6 +109,16 @@ export default function AdminLayout({
                 <Link href="/me/electives">
                   <BookOpen className="mr-2 h-4 w-4" />
                   Electives
+                </Link>
+              </Button> */}
+              <Button
+                variant="ghost"
+                className={`w-full justify-start ${activeRoute.startsWith("resources") && "bg-muted"}`}
+                asChild
+              >
+                <Link href="/me/resources">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  Resources
                 </Link>
               </Button>
               <Button
