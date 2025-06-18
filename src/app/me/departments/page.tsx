@@ -503,7 +503,7 @@ export default function FacultyDepartmentPage() {
                             </div>
                           </div>
                         </div>
-                        <Button
+                        {/* <Button
                           variant="outline"
                           size="sm"
                           className="w-full mt-4"
@@ -512,7 +512,7 @@ export default function FacultyDepartmentPage() {
                           <Link href={`/me/departments/${department._id}`}>
                             View Department
                           </Link>
-                        </Button>
+                        </Button> */}
                       </CardContent>
                     </Card>
                   ))}
