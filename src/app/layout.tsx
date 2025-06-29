@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.className} antialiased`}>
-        <NextTopLoader color="#2563eb" />
+        <NextTopLoader color="#3db166" />
         <Toaster position="top-center" richColors />
         {children}
       </body>

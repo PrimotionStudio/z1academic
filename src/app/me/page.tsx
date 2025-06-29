@@ -101,7 +101,7 @@ export default function AdminProfilePage() {
                       alt={userEditInfo.fullName || user.fullName}
                       width={100}
                       height={100}
-                      className="object-cover rounded-circle"
+                      className="object-cover h-[100px] w-[100px] rounded-full"
                     />
                   ) : (
                     <Avatar className="h-28 w-28">

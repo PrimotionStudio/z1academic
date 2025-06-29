@@ -301,9 +301,9 @@ export default function TimetableSettings() {
                   Timetable
                 </CardTitle>
                 <div className="flex flex-col md:flex-row gap-2 mt-2">
-                  <Badge variant="secondary">{selectedDepartmentName}</Badge>
-                  <Badge variant="secondary">Level {level}</Badge>
-                  <Badge variant="secondary">{selectedSemesterName}</Badge>
+                  <Badge variant="default">{selectedDepartmentName}</Badge>
+                  <Badge variant="default">Level {level}</Badge>
+                  <Badge variant="default">{selectedSemesterName}</Badge>
                 </div>
               </div>
               {viewTimetable && (

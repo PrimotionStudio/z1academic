@@ -185,23 +185,25 @@ export default function ResourcesPage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <Button
-            onClick={() => setIsAddBookOpen(true)}
-            className="flex items-center gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            Add New Book
-          </Button>
+        <div className="flex flex-col sm:flex-row gap-4 mb-8 items-center justify-between">
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <Button
+              onClick={() => setIsAddBookOpen(true)}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Add New Book
+            </Button>
 
-          <Button
-            onClick={() => setIsAddVideoOpen(true)}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            Add New Video
-          </Button>
+            <Button
+              onClick={() => setIsAddVideoOpen(true)}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Add New Video
+            </Button>
+          </div>
 
           <Button
             asChild
@@ -392,9 +394,7 @@ export default function ResourcesPage() {
             <div className="flex items-center gap-2 mb-6">
               <BookOpen className="h-6 w-6 text-blue-600" />
               <h2 className="text-2xl font-semibold text-gray-900">Books</h2>
-              <Badge variant="secondary">
-                {filteredResources.books.length}
-              </Badge>
+              <Badge variant="default">{filteredResources.books.length}</Badge>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -449,9 +449,7 @@ export default function ResourcesPage() {
             <div className="flex items-center gap-2 mb-6">
               <Play className="h-6 w-6 text-red-600" />
               <h2 className="text-2xl font-semibold text-gray-900">Videos</h2>
-              <Badge variant="secondary">
-                {filteredResources.videos.length}
-              </Badge>
+              <Badge variant="default">{filteredResources.videos.length}</Badge>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

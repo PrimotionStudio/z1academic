@@ -23,6 +23,7 @@ import {
   getAllUnpublishedVideos,
 } from "@/functions/Resource";
 import { toast } from "sonner";
+import { formatDate } from "@/lib/utils";
 
 export default function RequestsPage() {
   const [requestedBooks, setRequestedBooks] = useState<Book[]>([]);
@@ -72,14 +73,6 @@ export default function RequestsPage() {
         getAllUnpublishedVideos().then((videos) => setRequestedVideos(videos)),
       )
       .catch((error) => toast.error((error as Error).message));
-  };
-
-  const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    }).format(date);
   };
 
   return (
@@ -194,7 +187,7 @@ export default function RequestsPage() {
                                 size="sm"
                                 variant="destructive"
                                 onClick={() => handleRejectBook(book._id)}
-                                className="flex items-center gap-2"
+                                className="flex items-center gap-2 bg-red-700"
                               >
                                 <X className="h-4 w-4" />
                                 Reject
@@ -291,7 +284,7 @@ export default function RequestsPage() {
                                 size="sm"
                                 variant="destructive"
                                 onClick={() => handleRejectVideo(video._id)}
-                                className="flex items-center gap-2"
+                                className="flex items-center gap-2 bg-red-700"
                               >
                                 <X className="h-4 w-4" />
                                 Reject

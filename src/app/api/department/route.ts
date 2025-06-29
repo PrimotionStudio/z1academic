@@ -6,14 +6,21 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     await connect();
-    const { name, facultyId, maxLevels, programTitle } =
+    const { name, facultyId, maxLevels, programTitle, jambCutOff } =
       (await request.json()) as InputDepartment;
-    if (!name || !facultyId || !programTitle || maxLevels % 100 !== 0)
+    if (
+      !name ||
+      !facultyId ||
+      !programTitle ||
+      !jambCutOff ||
+      maxLevels % 100 !== 0
+    )
       throw new Error("Missing required parameters");
     const department = await Department.create({
       name,
       facultyId,
       maxLevels,
+      jambCutOff,
       programTitle,
     });
     if (!department) throw new Error("Cannot add department");
@@ -42,11 +49,18 @@ export async function GET() {
 export async function PATCH(request: NextRequest) {
   try {
     await connect();
-    const { departmentId, name, facultyId, maxLevels, programTitle } =
-      (await request.json()) as InputDepartment & { departmentId: string };
+    const {
+      departmentId,
+      name,
+      facultyId,
+      maxLevels,
+      programTitle,
+      jambCutOff,
+    } = (await request.json()) as InputDepartment & { departmentId: string };
     if (
       !departmentId ||
       !name ||
+      !jambCutOff ||
       !facultyId ||
       !programTitle ||
       maxLevels % 100 !== 0
@@ -56,6 +70,7 @@ export async function PATCH(request: NextRequest) {
       name,
       facultyId,
       maxLevels,
+      jambCutOff,
       programTitle,
     });
     return NextResponse.json(

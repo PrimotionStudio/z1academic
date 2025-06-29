@@ -55,25 +55,22 @@ export default function AdminLayout({
   return (
     <SidebarProvider>
       <div className="flex min-h-screen bg-gray-100 w-full">
-        <Sidebar className="bg-white">
-          <SidebarHeader className="border-b p-4 bg-white">
-            <Link href="/admin/dashboard" className="flex items-center gap-2">
-              <div className="relative w-8 h-8">
-                <div className="absolute inset-0 bg-blue-600 rounded-full"></div>
-                <div className="absolute inset-0 flex items-center justify-center font-bold text-white">
-                  Z1
-                </div>
-              </div>
-              <span style={{ marginLeft: -5 }} className="text-gray-900">
-                <span className={`${rockSalt.className}`}>ACADEMIC</span>
-              </span>
+        <Sidebar>
+          <SidebarHeader className="p-4 bg-white">
+            <Link href="/me" className="flex items-center gap-2">
+              <Image
+                src={process.env.NEXT_PUBLIC_SCHOOL_LOGO2!}
+                alt="School Logo"
+                width={200}
+                height={50}
+              />
             </Link>
           </SidebarHeader>
-          <SidebarContent className="flex flex-col justify-between p-4 h-[calc(100vh-4rem)] bg-white">
+          <SidebarContent className="flex flex-col justify-between p-4 h-[calc(100vh-4rem)] bg-primary">
             <nav className="space-y-2">
               <Button
                 variant="ghost"
-                className={`w-full justify-start ${routeLength === 2 && pathname.split("/")[1].startsWith("me") && "bg-muted"}`}
+                className={`w-full justify-start ${routeLength === 2 && pathname.split("/")[1].startsWith("me") && "bg-accent"}`}
                 asChild
               >
                 <Link href="/me">
@@ -83,7 +80,7 @@ export default function AdminLayout({
               </Button>
               <Button
                 variant="ghost"
-                className={`w-full justify-start ${activeRoute.startsWith("departments") && "bg-muted"}`}
+                className={`w-full justify-start ${activeRoute.startsWith("departments") && "bg-accent"}`}
                 asChild
               >
                 <Link href="/me/departments">
@@ -93,7 +90,7 @@ export default function AdminLayout({
               </Button>
               <Button
                 variant="ghost"
-                className={`w-full justify-start ${activeRoute.startsWith("courses") && "bg-muted"}`}
+                className={`w-full justify-start ${activeRoute.startsWith("courses") && "bg-accent"}`}
                 asChild
               >
                 <Link href="/me/courses">
@@ -103,7 +100,7 @@ export default function AdminLayout({
               </Button>
               {/* <Button
                 variant="ghost"
-                className={`w-full justify-start ${activeRoute.startsWith("electives") && "bg-muted"}`}
+                className={`w-full justify-start ${activeRoute.startsWith("electives") && "bg-accent"}`}
                 asChild
               >
                 <Link href="/me/electives">
@@ -113,7 +110,7 @@ export default function AdminLayout({
               </Button> */}
               <Button
                 variant="ghost"
-                className={`w-full justify-start ${activeRoute.startsWith("resources") && "bg-muted"}`}
+                className={`w-full justify-start ${activeRoute.startsWith("resources") && "bg-accent"}`}
                 asChild
               >
                 <Link href="/me/resources">
@@ -123,7 +120,7 @@ export default function AdminLayout({
               </Button>
               <Button
                 variant="ghost"
-                className={`w-full justify-start ${activeRoute.startsWith("timetable") && "bg-muted"}`}
+                className={`w-full justify-start ${activeRoute.startsWith("timetable") && "bg-accent"}`}
                 asChild
               >
                 <Link href="/me/timetable">
@@ -133,7 +130,7 @@ export default function AdminLayout({
               </Button>
               <Button
                 variant="ghost"
-                className={`w-full justify-start ${activeRoute.startsWith("settings") && "bg-muted"}`}
+                className={`w-full justify-start ${activeRoute.startsWith("settings") && "bg-accent"}`}
                 asChild
               >
                 <Link href="/me/settings">
@@ -145,7 +142,7 @@ export default function AdminLayout({
 
             <div className="space-y-2">
               <Button
-                variant="ghost"
+                variant="outline"
                 className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50"
                 onClick={async () => {
                   await logout();
@@ -178,7 +175,7 @@ export default function AdminLayout({
                         alt={user.fullName}
                         width={30}
                         height={30}
-                        className="object-cover rounded-circle"
+                        className="object-cover h-[30px] w-[30px] rounded-full"
                       />
                     ) : (
                       <Avatar className="h-[30px] w-[30px]">
@@ -196,13 +193,14 @@ export default function AdminLayout({
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link href="/admin/dashboard/profile">Profile</Link>
+                      <Link href="/me">Profile</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link href="/admin/dashboard/settings">Settings</Link>
+                      <Link href="/me/settings">Settings</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
+                      className="bg-red-800 text-white"
                       onClick={async () => {
                         await logout();
                         router.push("/");

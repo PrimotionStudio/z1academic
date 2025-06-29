@@ -16,6 +16,10 @@ const DepartmentSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    jambCutOff: {
+      type: Number,
+      required: true,
+    },
     programTitle: {
       type: String,
       required: true,

@@ -34,7 +34,7 @@ export default function SettingsPage() {
             <Link href="/me/settings/grade-scheme">
               <Button
                 variant="ghost"
-                className="w-full justify-between h-auto p-4 text-left"
+                className="w-full justify-between h-auto p-4 text-left hover:bg-muted"
               >
                 <div className="flex items-center gap-3 w-full text-wrap">
                   <div className="p-2 bg-primary/10 rounded-lg">
@@ -54,7 +54,7 @@ export default function SettingsPage() {
             <Link href="/me/settings/change-password">
               <Button
                 variant="ghost"
-                className="w-full justify-between h-auto p-4 text-left"
+                className="w-full justify-between h-auto p-4 text-left hover:bg-muted"
               >
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/10 rounded-lg">
